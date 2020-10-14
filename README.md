@@ -24,8 +24,8 @@ class AppKernel extends Kernel
             new Sensio\Bundle\FrameworkExtraBundle\SensioFrameworkExtraBundle(),
             
             // add this line before AppBundle()
-            
             new BlueRaster\CSFilesystem\CSFilesystemBundle(),
+            
             new AppBundle\AppBundle(),            
         ];
 
