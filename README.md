@@ -30,3 +30,14 @@ class AppKernel extends Kernel
         ];
 
 ```
+
+Add the routes to `app/config/routing.yml`
+
+```yaml
+app:
+    resource: '@AppBundle/Controller/ui'
+    type: annotation
+csfilesystem:
+    resource: '@CSFilesystemBundle/FilesController.php'
+    type: annotation    
+```
