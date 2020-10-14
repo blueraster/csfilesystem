@@ -11,7 +11,7 @@ composer require blueraster/csfilesystem
 
 Register the bundle in `app/AppKernel.php`
 
-```
+```php
 class AppKernel extends Kernel
 {
     public function registerBundles()
