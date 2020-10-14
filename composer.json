@@ -1,5 +1,5 @@
 {
-    "name": "blueraster/cs_filesystem",
+    "name": "blueraster/csfilesystem",
     "type": "library",
     "license": "MIT",
     "authors": [
@@ -8,20 +8,10 @@
             "email": "tech@americanmadeweb.com"
         }
     ],
-    "minimum-stability": "dev",
-    "repositories": [
-        {
-            "type": "path",
-            "url": "./CSFilesystem"
-        }
-    ],    
     "require": {
-        "vlucas/phpdotenv": "^5.2@dev",
-        "filp/whoops": "^2.6@dev",
-        "guzzlehttp/guzzle": "^7.1@dev",
-        "illuminate/support": "7.x-dev",
-        "illuminate/filesystem": "7.x-dev",
-        "illuminate/http": "7.x-dev"
+        "vlucas/phpdotenv": "^5.2",
+        "illuminate/support": "^5.8",
+        "league/flysystem": "^1.1"
     },
     "require-dev": {
         "kint-php/kint": "^3.3"
@@ -40,6 +30,9 @@
     "autoload": {
         "psr-4": {
             "BlueRaster\\CSFilesystem\\": "src/"
-        }
+        },
+        "files": [
+            "helpers.php"
+        ]        
     }
 }
