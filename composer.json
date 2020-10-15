@@ -9,24 +9,10 @@
         }
     ],
     "require": {
-        "vlucas/phpdotenv": "^5.2",
+	    "vlucas/phpdotenv": "^5.2",
         "illuminate/support": "^5.8",
         "league/flysystem": "^1.1"
     },
-    "require-dev": {
-        "kint-php/kint": "^3.3"
-    },    
-    "scripts": {
-        "post-autoload-dump": [
-
-        ],
-        "post-root-package-install": [
-            "@php -r \"file_exists('.env') || copy('.env.example', '.env');\""
-        ],
-        "post-create-project-cmd": [
-
-        ]
-    },    
     "autoload": {
         "psr-4": {
             "BlueRaster\\CSFilesystem\\": "src/"

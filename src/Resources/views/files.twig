@@ -252,7 +252,7 @@
       	var hrefs = [];
       	$(patharray.map(function(a,i){
         	hrefs.push(a);
-        	var thisref = '/ui/upload/' + hrefs.join('/');
+        	var thisref = '/files/' + hrefs.join('/');
         	if(hrefs.length === patharray.length)
             return $('<li class="breadcrumb-item active"><b>'+a+'</b></li>')[0];
           else
