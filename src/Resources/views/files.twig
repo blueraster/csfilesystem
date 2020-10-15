@@ -167,7 +167,7 @@
                         <div class="panel-heading">
 <nav aria-label="breadcrumb">
   <ol class="breadcrumb" style="margin-bottom: 0">
-    <li class="breadcrumb-item"><a href="/ui/upload">files</a></li>
+    <li class="breadcrumb-item"><a href="/files">files</a></li>
   </ol>
 </nav>
                         </div>
@@ -188,13 +188,13 @@
 
 									{% for file in files %}
                                     <tr>
-                    {% if file.is_dir %}
-                        <td><a href="{{ file.link }}"><i class="fa fa-folder"></i> {{ file.name }}</a></td>
-                    {% else %}
+					                    {% if file.is_dir %}
+					                        <td><a href="{{ file.link }}"><i class="fa fa-folder"></i> {{ file.name }}</a></td>
+					                    {% else %}
 											  <td>{{ file.name }}
-  											  <a href="{{ file.link }}" title="download file" rel="tooltip" style="margin-left: 30px" ><i class="fa fa-download"></i></a>
-  											  <a href="{{ file.link }}" class="edit_filename" rel="tooltip" title="change filename" style="margin-left: 10px"><i class="fa fa-pencil"></i></a>
-  											  <a href="{{ file.link }}" rel="tooltip" class="delete_file text-danger" title="delete file" style="margin-left: 10px"><i class="fa fa-trash"></i></a>
+	  											  <a href="{{ file.link }}" title="download file" rel="tooltip" style="margin-left: 30px" ><i class="fa fa-download"></i></a>
+	  											  <a href="{{ file.link }}" class="edit_filename" rel="tooltip" title="change filename" style="margin-left: 10px"><i class="fa fa-pencil"></i></a>
+	  											  <a href="{{ file.link }}" rel="tooltip" class="delete_file text-danger" title="delete file" style="margin-left: 10px"><i class="fa fa-trash"></i></a>
 											  </td>
 										{% endif %}
                                     </tr>

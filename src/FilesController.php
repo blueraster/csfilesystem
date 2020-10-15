@@ -10,20 +10,22 @@ use Symfony\Component\Routing\Exception\ResourceNotFoundException;
 use Psr\Log\LoggerInterface;
 use AppBundle\Service\HttpHelper;
 use AppBundle\Controller\ui\TokenAuthenticatedController;
+use AppKernel;
 
 class FilesController extends Controller implements TokenAuthenticatedController {
 
     /**
-     * @Route("/files/{filePath}", name="files", methods={"GET"}, requirements={"filePath"=".*?"})
+     *  // @ // Route("/files/{filePath}", name="files", methods={"GET"}, requirements={"filePath"=".*?"})
      */
-    public function viewFileListSubfolderAction(Request $request, $filePath = null) {
+/*
+    public function viewFiles(Request $request, $filePath = null) {
         $client = $this->get(HttpHelper::class);
         //set the oauth token
         $access_token = $request->cookies->has('access_token') ? $request->cookies->get('access_token') : "";
         $authHeader = 'Bearer ' . $access_token;
 
         $response = $client->request('GET', 'files/' . $filePath, null, ['Authorization' => $authHeader, 'Accept' => 'application/json']);
-// dd($response->getBody()); die();
+
         //unauthorized or expired  redirect to logout page
         if ($response->getStatusCode() == 401) {
             return $this->redirectToRoute('logout');
@@ -31,34 +33,33 @@ class FilesController extends Controller implements TokenAuthenticatedController
 
         $files = json_decode($response->getBody());
 
-        return $this->render('files.twig', [
+        return $this->render('@CSFilesystem/files.twig', [
 	        'files' => $files,
 	        'filePath' => $filePath,
 	        'parent_dir' => dirname($filePath),
 	        'access_token' => $access_token,
 	        'foldername'  => $filePath,
-	        
+
         ]);
     }
-    
-    private function getRootdir($app){
+*/
+
+    private function getRootdir(){
         if($this->rootdir) return $this->rootdir;
 
         $this->rootdir = base_path('/files') . str_start($app['current_user']['filepath'], '/');
         return $this->rootdir;
     }
 
-    private function getFilesystem($app){
+    private function getFilesystem(){
         if($this->filesystem) return $this->filesystem;
 
-        $this->rootdir = $this->getRootdir($app);
+        $this->rootdir = $this->getRootdir();
         $fileManager = new FileManagerFlysystem(['rootFolder' => $this->rootdir]);
         $this->filesystem = $fileManager->getFilesystem();
         return $this->filesystem;
     }
-    
 
-/*
     public $rootdir;
     public $filesystem;
 
@@ -81,6 +82,8 @@ class FilesController extends Controller implements TokenAuthenticatedController
         $url = '/ui/upload/' . ltrim($path, '/');
         return !$is_file ? str_finish($url, '/') : $url;
     }
+
+
 
 
     public function connect(Application $app){
@@ -146,6 +149,15 @@ class FilesController extends Controller implements TokenAuthenticatedController
     }
 
 
+/*
+    protected function getUser()
+
+		parent::getUser();
+
+	}
+*/
+
+/*
     public function getUser(Application $app, $username, $access_token)
     {
         $client = $app['services.httphelper'];
@@ -156,10 +168,17 @@ class FilesController extends Controller implements TokenAuthenticatedController
         $response = json_decode($response->getBody(),true);
         return isset($response['username']) ? $response : false;
     }
+*/
 
 
-    public function viewFiles(Application $app, $path = ''){
-        if($this->getFilesystem($app)->has($path) && $this->filesystem->getMimetype($path) != "directory"){
+    /**
+     * @Route("/files/{filePath}", name="files", methods={"GET"}, requirements={"filePath"=".*?"})
+     */
+    public function viewFiles($path = ''){
+	    dd(new AppKernel);
+
+
+        if($this->getFilesystem()->has($path) && $this->filesystem->getMimetype($path) != "directory"){
             $newfilename = $app['request']->get('new_filename');
             if($newfilename){
                 $newpath = dirname($path) . "/$newfilename";
@@ -223,7 +242,6 @@ class FilesController extends Controller implements TokenAuthenticatedController
 
 
     public function deleteFolder(Application $app, $path = ''){
-
         $path = clean_path($path);
         if(empty($path)) {
             return false;
@@ -262,6 +280,5 @@ class FilesController extends Controller implements TokenAuthenticatedController
         return new Response("An error occurred");
 
     }
-*/
 
 }
