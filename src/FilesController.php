@@ -18,39 +18,10 @@ use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 
 class FilesController extends Controller implements TokenAuthenticatedController {
 
-    /**
-     *  // @ // Route("/files/{filePath}", name="files", methods={"GET"}, requirements={"filePath"=".*?"})
-     */
-/*
-    public function viewFiles(Request $request, $filePath = null) {
-        $client = $this->get(HttpHelper::class);
-        //set the oauth token
-        $access_token = $request->cookies->has('access_token') ? $request->cookies->get('access_token') : "";
-        $authHeader = 'Bearer ' . $access_token;
-
-        $response = $client->request('GET', 'files/' . $filePath, null, ['Authorization' => $authHeader, 'Accept' => 'application/json']);
-
-        //unauthorized or expired  redirect to logout page
-        if ($response->getStatusCode() == 401) {
-            return $this->redirectToRoute('logout');
-        }
-
-        $files = json_decode($response->getBody());
-
-        return $this->render('@CSFilesystem/files.twig', [
-	        'files' => $files,
-	        'filePath' => $filePath,
-	        'parent_dir' => dirname($filePath),
-	        'access_token' => $access_token,
-	        'foldername'  => $filePath,
-
-        ]);
-    }
-*/
 
     private function getRootdir(){
         if($this->rootdir) return $this->rootdir;
-        $this->rootdir = Utils:: storage_path(str_start(@$this->getUser()->filepath, '/'));
+        $this->rootdir = Utils:: storage_path(str_start($this->getUser()->getUsername(), '/'));
         return $this->rootdir;
     }
 
@@ -107,36 +78,6 @@ class FilesController extends Controller implements TokenAuthenticatedController
     }
 
 
-/*
-    private function authenticated_middleware(Request $request){
-        $accesss_token = "";
-        $app['current_user'] = $this->getUser($app, $app['request']->cookies->get('username'), $app['request']->cookies->get('access_token'));
-
-        if( $app['current_user'] === false ){
-        // if( !$app['request']->cookies->has('access_token')){
-            return $app->redirect($app["url_generator"]->generate('login'));
-        }
-        else{
-            $this->rootdir = Utils::base_path('/files') . str_start($app['current_user']['filepath'], '/');
-            $fileManager = new FileManagerFlysystem(['rootFolder' => $this->rootdir]);
-            $this->filesystem = $fileManager->getFilesystem();
-//             dd($this);
-        }
-    }
-*/
-
-/*
-    private function protected_folder_middleware(Request $request, Application $app){
-        $path = $request->get('path');
-        if(empty($path)) {
-            return false;
-        }
-        if($this->can_view_path($this->getUser(), $path) === false) {
-            throw new NotFoundHttpException('The requested folder does not exist');
-        }
-    }
-*/
-
 
     private function can_view_path($user, $path){
 
@@ -150,32 +91,8 @@ class FilesController extends Controller implements TokenAuthenticatedController
         if(@$user->is_super_admin == 1) return true;
 
         return true;
-
-
-        return in_array(head($path), @$user->permitted_paths);
     }
 
-
-/*
-    protected function getUser()
-
-		parent::getUser();
-
-	}
-*/
-
-/*
-    public function getUser(Application $app, $username, $access_token)
-    {
-        $client = $app['services.httphelper'];
-        $response = $client->request('GET', 'users/'.$username, null, ['Content-Type' => 'application/json',
-            'Authorization'=> 'Bearer ' . $access_token,
-            'Accept' => 'application/json']);
-
-        $response = json_decode($response->getBody(),true);
-        return isset($response['username']) ? $response : false;
-    }
-*/
 
 
     /**
