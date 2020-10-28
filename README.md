@@ -41,3 +41,5 @@ csfilesystem:
     resource: '@CSFilesystemBundle/FilesController.php'
     type: annotation    
 ```
+
+> If you're getting an error message on the `/files/` page, you need to clear the application's cache. Delete files in the directory `var/cache`

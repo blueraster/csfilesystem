@@ -9,7 +9,6 @@
         }
     ],
     "require": {
-	    "vlucas/phpdotenv": "^5.2",
         "illuminate/support": "^5.8",
         "league/flysystem": "^1.1"
     },

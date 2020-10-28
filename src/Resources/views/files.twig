@@ -275,9 +275,22 @@
     			alert( "Request failed: " + textStatus );
     		});
   	});
+  	
   	$(document).on('click', '.rename_folder', function(){
     	var foldername = prompt('Enter new folder name...', '{{foldername}}');
+    	
     	if(!foldername) return;
+    	
+/*
+    	axios.put(window.location.href, {foldername : foldername, rename: true}, {}).then(function(response){
+	    	debugger
+    	})
+    	.catch(function(err){
+    			console.log(err);
+    			alert( "Request failed: " + err );
+    	});
+*/
+    	
     		var request = $.ajax({
     			url: "",
     			type: "PUT",

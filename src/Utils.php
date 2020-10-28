@@ -24,7 +24,7 @@ class Utils{
 	}
 	
 	public static function storage_path($path = ''){
-	    $path_base = Utils::env('STORAGE_PATH', '/files');
+	    $path_base = Utils::env('STORAGE_PATH', '/csfilesystem');
 	    return Utils::base_path($path_base . Utils::normalize_path($path));
 	}
 	

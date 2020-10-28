@@ -21,7 +21,8 @@ class FilesController extends Controller implements TokenAuthenticatedController
 
     private function getRootdir(){
         if($this->rootdir) return $this->rootdir;
-        $this->rootdir = Utils:: storage_path(str_start($this->getUser()->getUsername(), '/'));
+//         $this->rootdir = Utils::storage_path(str_start($this->getUser()->getUsername(), '/'));
+        $this->rootdir = Utils::storage_path();
         return $this->rootdir;
     }
 
@@ -30,18 +31,17 @@ class FilesController extends Controller implements TokenAuthenticatedController
 
         $this->rootdir = $this->getRootdir();
         $fileManager = new FileManagerFlysystem(['rootFolder' => $this->rootdir]);
+        if($fileManager->adapter === 'local'){
+	        if(! file_exists($this->rootdir . '/.gitignore') ){
+		        file_put_contents($this->rootdir . '/.gitignore', "*\n!.gitignore\n");
+	        }
+        }
         $this->filesystem = $fileManager->getFilesystem();
         return $this->filesystem;
     }
 
     public $rootdir;
     public $filesystem;
-
-    protected $middleware = [
-        'authenticated_middleware',
-        'protected_folder_middleware',
-    ];
-
 
 
     private function derive_path($path){
@@ -58,48 +58,10 @@ class FilesController extends Controller implements TokenAuthenticatedController
     }
 
 
-
-
-    public function connect(Application $app){
-        $controllers = $app['controllers_factory'];
-        $controllers->get('/', 'Controllers\UploadController::viewFiles');
-        $controllers->get('/{path}', 'Controllers\UploadController::viewFiles')->assert("path", ".*")->bind('view_files');
-        $controllers->put('/{path}', 'Controllers\UploadController::createFolder')->assert("path", ".*");
-        $controllers->post('/{path}', 'Controllers\UploadController::uploadFiles')->assert("path", ".*");
-        $controllers->delete('/{path}', 'Controllers\UploadController::deleteFolder')->assert("path", ".*");
-
-        $controllers->before(function(Request $request){
-            foreach($this->middleware as $fn){
-                $guarded = $this->{$fn}($request, $app);
-                if($guarded) return $guarded;
-            }
-        });
-        return $controllers;
-    }
-
-
-
-    private function can_view_path($user, $path){
-
-        $path = rtrim(trim($path), '/');
-        $path = explode('/', $path);
-        if(count($path) === 1) return true;
-
-        foreach($path as $segment){
-            if(starts_with($segment, '.')) return false;
-        }
-        if(@$user->is_super_admin == 1) return true;
-
-        return true;
-    }
-
-
-
     /**
      * @Route("/files/{filePath}", name="files", methods={"GET"}, requirements={"filePath"=".*?"})
      */
     public function viewFiles(Request $request, $filePath = ''){
-
         if($this->getFilesystem()->has($filePath) && $this->filesystem->getMimetype($filePath) != "directory"){
             $newfilename = $request->get('new_filename');
             if($newfilename){
@@ -112,6 +74,7 @@ class FilesController extends Controller implements TokenAuthenticatedController
                     $fileStream = $this->filesystem->readStream($filePath);
                     stream_copy_to_stream($fileStream, $outputStream);
                 };
+
                 return new StreamedResponse($callback, 200, [
                     'Content-Type' => $this->filesystem->getMimetype($filePath),
                     'Content-Disposition' => ResponseHeaderBag::DISPOSITION_ATTACHMENT,
@@ -123,11 +86,13 @@ class FilesController extends Controller implements TokenAuthenticatedController
         if(!empty($filePath) && !$this->getFilesystem()->has($filePath)){
             throw new NotFoundHttpException('The requested folder does not exist');
         }
-
         $paths = collect($this->getFilesystem()->listContents($filePath));
+/*
         $filtered_paths = $paths->filter(function($v) {
             return $this->can_view_path($this->getUser() , $v['path']);
         });
+*/
+		$filtered_paths = $paths;
 
         foreach ($filtered_paths as $fileInfo) {
             if($fileInfo['basename'][0] === '.') continue;
@@ -158,9 +123,10 @@ class FilesController extends Controller implements TokenAuthenticatedController
             return new Response('false');
         }
         if($rename) {
-            $renamed = dirname($filePath) . "/$newfolder";
+            $dirname = dirname($filePath) == '.' ? '' : dirname($filePath) . '/';	        
+            $renamed = "$dirname/$newfolder";
+            
             $this->getFilesystem()->rename($filePath, $renamed);
-            $dirname = dirname($filePath) == '.' ? '' : dirname($filePath) . '/';
             return new Response($this->url($renamed));
         }
         else {
