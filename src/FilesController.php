@@ -22,7 +22,8 @@ class FilesController extends Controller implements TokenAuthenticatedController
     private function getRootdir(){
         if($this->rootdir) return $this->rootdir;
 //         $this->rootdir = Utils::storage_path(str_start($this->getUser()->getUsername(), '/'));
-        $this->rootdir = Utils::storage_path();
+//         $this->rootdir = Utils::storage_path();
+        $this->rootdir = $this->container->getParameter('csweb_api_files_folder');
         return $this->rootdir;
     }
 
@@ -143,6 +144,7 @@ class FilesController extends Controller implements TokenAuthenticatedController
     public function deleteFolder(Request $request, $filePath = ''){
         $filePath = Utils::clean_path($filePath);
         if(empty($filePath)) {
+	        throw new NotFoundHttpException('You cannot delete a protected folder.');
             return false;
             die();
         }

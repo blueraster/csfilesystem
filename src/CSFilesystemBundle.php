@@ -7,6 +7,8 @@ use Symfony\Component\HttpKernel\Bundle\Bundle;
 class CSFilesystemBundle extends Bundle
 {
 	public function __construct(){
+		
+// 		d($this->getContainerExtension());
 /*
 		$js = '<script>
 	(function(d){

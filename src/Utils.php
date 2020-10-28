@@ -4,7 +4,7 @@ namespace BlueRaster\CSFilesystem;
 
 use Illuminate\Support\Arr;
 use Illuminate\Support\Str;
-use Dotenv\Dotenv;
+// use Dotenv\Dotenv;
 
 
 class Utils{
@@ -23,11 +23,13 @@ class Utils{
 	    return dirname(dirname(dirname(__FILE__))) . Utils::normalize_path($path);
 	}
 	
+/*
 	public static function storage_path($path = ''){
 	    $path_base = Utils::env('STORAGE_PATH', '/csfilesystem');
 	    return Utils::base_path($path_base . Utils::normalize_path($path));
 	}
 	
+*/
 	
 	public static function clean_path($path){
 	    $path_array = explode('/', $path);
