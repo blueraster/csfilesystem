@@ -5,7 +5,8 @@
 ```
 composer require blueraster/csfilesystem
 ```
-
+> You may receiver an error on installation mentioning PHP versions. For some versions of CSWeb, a specific PHP version has been specified in you `package.json` file.
+> To remove it from the command line: `composer config --unset platform.php`
 
 ### Configuration
 
@@ -43,3 +44,19 @@ csfilesystem:
 ```
 
 > If you're getting an error message on the `/files/` page, you need to clear the application's cache. Delete files in the directory `var/cache`
+
+
+### JS Snippet to add menu item 
+
+If you would like a link to the files page, add the following snippet to the bottom of the JavaScript file located at: `dist/js/sb-admin-2.js`
+
+```js
+(function(d){
+	('addEventListener' in window) && window.addEventListener("load", function(){
+		var menu = d.getElementById("side-menu");
+		var li = d.createElement("li");
+		li.innerHTML = '<a href="/files" class="Xactive"><i class="fa fa-folder-o fa-fw"></i> List Files</a>';
+		menu && menu.appendChild(li);			
+	});
+})(document);
+```

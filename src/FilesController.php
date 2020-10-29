@@ -42,8 +42,9 @@ class FilesController extends Controller implements TokenAuthenticatedController
     }
 
     public $rootdir;
-    public $filesystem;
 
+    public $filesystem;
+    
 
     private function derive_path($path){
         $path = '/' . Utils::clean_path($path);
