@@ -55,13 +55,13 @@ class FilesController extends Controller implements TokenAuthenticatedController
 
     private function url($path = ''){
         $is_file = str_contains($path, '.');
-        $url = '/files/' . ltrim($path, '/');
+        $url = '/file-manager/' . ltrim($path, '/');
         return !$is_file ? str_finish($url, '/') : $url;
     }
 
 
     /**
-     * @Route("/files/{filePath}", name="files", methods={"GET"}, requirements={"filePath"=".*?"})
+     * @Route("/file-manager/{filePath}", name="files", methods={"GET"}, requirements={"filePath"=".*?"})
      */
     public function viewFiles(Request $request, $filePath = ''){
         if($this->getFilesystem()->has($filePath) && $this->filesystem->getMimetype($filePath) != "directory"){
@@ -116,7 +116,7 @@ class FilesController extends Controller implements TokenAuthenticatedController
 
 
     /**
-     * @Route("/files/{filePath}", name="createFolder", methods={"PUT"}, requirements={"filePath"=".*?"})
+     * @Route("/file-manager/{filePath}", name="createFolder", methods={"PUT"}, requirements={"filePath"=".*?"})
      */
     public function createFolder(Request $request, $filePath = ''){
         $newfolder = $request->get('foldername');
@@ -140,7 +140,7 @@ class FilesController extends Controller implements TokenAuthenticatedController
 
 
     /**
-     * @Route("/files/{filePath}", name="deleteFolder", methods={"DELETE"}, requirements={"filePath"=".*?"})
+     * @Route("/file-manager/{filePath}", name="deleteFolder", methods={"DELETE"}, requirements={"filePath"=".*?"})
      */
     public function deleteFolder(Request $request, $filePath = ''){
         $filePath = Utils::clean_path($filePath);
@@ -165,7 +165,7 @@ class FilesController extends Controller implements TokenAuthenticatedController
 
 
     /**
-     * @Route("/files/{filePath}", name="uploadFiles", methods={"POST"}, requirements={"filePath"=".*?"})
+     * @Route("/file-manager/{filePath}", name="uploadFiles", methods={"POST"}, requirements={"filePath"=".*?"})
      */
 
     public function uploadFiles(Request $request, $filePath = ''){
@@ -183,7 +183,7 @@ class FilesController extends Controller implements TokenAuthenticatedController
             }
         }
         if($filecount == $successes){
-		    return new RedirectResponse("/files/$filePath");
+		    return new RedirectResponse("/file-manager/$filePath");
         }
         return new Response("An error occurred");
 

@@ -163,7 +163,7 @@
                         <div class="panel-heading">
 <nav aria-label="breadcrumb">
   <ol class="breadcrumb" style="margin-bottom: 0">
-    <li class="breadcrumb-item"><a href="/files">files</a></li>
+    <li class="breadcrumb-item"><a href="/file-manager">files</a></li>
   </ol>
 </nav>
                         </div>
@@ -248,7 +248,7 @@
       	var hrefs = [];
       	$(patharray.map(function(a,i){
         	hrefs.push(a);
-        	var thisref = '/files/' + hrefs.join('/');
+        	var thisref = '/file-manager/' + hrefs.join('/');
         	if(hrefs.length === patharray.length)
             return $('<li class="breadcrumb-item active"><b>'+a+'</b></li>')[0];
           else
@@ -281,16 +281,6 @@
     	
     	if(!foldername) return;
     	
-/*
-    	axios.put(window.location.href, {foldername : foldername, rename: true}, {}).then(function(response){
-	    	debugger
-    	})
-    	.catch(function(err){
-    			console.log(err);
-    			alert( "Request failed: " + err );
-    	});
-*/
-    	
     		var request = $.ajax({
     			url: "",
     			type: "PUT",
@@ -306,6 +296,7 @@
     			alert( "Request failed: " + textStatus );
     		});
   	});
+    
   	$(document).on('click', '.delete_folder', function(){
     	var confirmed = prompt('To confirm, and delete the folder, type the full path below');
     	var path = '{{filePath}}';
@@ -358,7 +349,6 @@
   		});
 
   		request.done(function( data ) {
-//     		console.log(data);
   			if(data) window.location.reload();
   		});
 
