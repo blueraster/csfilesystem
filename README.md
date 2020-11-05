@@ -5,7 +5,7 @@
 ```
 composer require blueraster/csfilesystem
 ```
-> You may receiver an error on installation mentioning PHP versions. For some versions of CSWeb, a specific PHP version has been specified in you `package.json` file.
+> You may receiver an error on installation mentioning PHP versions. For some versions of CSWeb, a specific PHP version has been specified in your `package.json` file.
 > To remove it from the command line: `composer config --unset platform.php`
 
 ### Configuration
