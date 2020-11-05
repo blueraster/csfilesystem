@@ -4,6 +4,8 @@
 
 ```
 composer require blueraster/csfilesystem
+## or
+composer require blueraster/csfilesystem dev-main
 ```
 > You may receiver an error on installation mentioning PHP versions. For some versions of CSWeb, a specific PHP version has been specified in your `package.json` file.
 > To remove it from the command line: `composer config --unset platform.php`
@@ -44,7 +46,7 @@ csfilesystem:
     type: annotation    
 ```
 
-> If you're getting an error message on the `/files/` page, you need to clear the application's cache. Delete files in the directory `var/cache`
+> If you're getting an error message on the `/file-manager/` page, you need to clear the application's cache. Delete files in the directory `var/cache`
 
 
 
@@ -57,7 +59,7 @@ If you would like a link to the files page, add the following snippet to the bot
 	('addEventListener' in window) && window.addEventListener("load", function(){
 		var menu = d.getElementById("side-menu");
 		var li = d.createElement("li");
-		li.innerHTML = '<a href="/file-manager" class="Xactive"><i class="fa fa-folder-o fa-fw"></i> List Files</a>';
+		li.innerHTML = '<a href="/file-manager"><i class="fa fa-folder-o fa-fw"></i> List Files</a>';
 		menu && menu.appendChild(li);			
 	});
 })(document);
