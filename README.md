@@ -64,3 +64,20 @@ If you would like a link to the files page, add the following snippet to the bot
 	});
 })(document);
 ```
+
+### Troubleshooting Installation
+
+In some cases you may receive errors during installation. Please note the following for help with this.
+
+#### PHP Version Errors
+> You may receiver an error on installation mentioning PHP versions. For some versions of CSWeb, a specific PHP version has been specified in your `package.json` file.
+> To remove it from the command line: `composer config --unset platform.php`
+> Or simply remove the section manually from `composer.json`
+
+#### Out of Memory Error
+
+> If you receive an error similar to `PHP Fatal error:  Allowed memory size of 1610612736 bytes exhausted (tried to allocate 134217736 bytes)`<br />
+> This is due to a script intended for internal development that runs on updates.<br />
+> To fix this, add `--no-scripts` to all `require` and `install` commands.<br />
+> To permanently prevent this, use the command: <br />
+> `php composer.phar config --unset scripts.post-update-cmd`
