@@ -16,6 +16,8 @@ use AppBundle\Controller\ui\TokenAuthenticatedController;
 use AppKernel;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 
+use Carbon\Carbon;
+
 class FilesController extends Controller implements TokenAuthenticatedController {
 
 
@@ -99,8 +101,15 @@ class FilesController extends Controller implements TokenAuthenticatedController
         foreach ($filtered_paths as $fileInfo) {
             if($fileInfo['basename'][0] === '.') continue;
             $link = empty($filePath) ? $this->url($fileInfo['basename']) : $this->url("$filePath/") . $fileInfo['basename'] ;
-            $files[] = ['name' => $fileInfo['basename'], 'is_dir' => $fileInfo['type'] == "dir", 'link' => $link];
+            $files[] = [
+	            'name' => $fileInfo['basename'], 
+	            'is_dir' => $fileInfo['type'] == "dir", 
+	            'link' => $link,
+	            'timestamp' => (new Carbon($fileInfo['timestamp']))->toDateTimeString(),
+            ];
         }
+
+//         dd($files);
 
         $data = [
         	'filePath' => $filePath, 

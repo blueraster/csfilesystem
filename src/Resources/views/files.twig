@@ -173,12 +173,14 @@
                                 <thead>
                                     <tr>
                                         <th class="col-xs-3">Name</th>
+                                        <th class="col-xs-3">Timestamp</th>
                                     </tr>
                                 </thead>
                                 <tbody>
 
                         <tr>
                         <td><a href="{{ parent_dir }}"><i class="fa fa-arrow-up"></i> ..</a></td>
+                        <td></td>
                         </tr>
 
 
@@ -186,11 +188,17 @@
                                     <tr>
 					                    {% if file.is_dir %}
 					                        <td><a href="{{ file.link }}"><i class="fa fa-folder"></i> {{ file.name }}</a></td>
+					                        <td></td>
 					                    {% else %}
 											  <td>{{ file.name }}
+												  <div class="pull-right">
 	  											  <a href="{{ file.link }}" title="download file" rel="tooltip" style="margin-left: 30px" ><i class="fa fa-download"></i></a>
 	  											  <a href="{{ file.link }}" class="edit_filename" rel="tooltip" title="change filename" style="margin-left: 10px"><i class="fa fa-pencil"></i></a>
 	  											  <a href="{{ file.link }}" rel="tooltip" class="delete_file text-danger" title="delete file" style="margin-left: 10px"><i class="fa fa-trash"></i></a>
+	  											  </div>
+											  </td>
+											  <td>
+												  {{ file.timestamp }}
 											  </td>
 										{% endif %}
                                     </tr>

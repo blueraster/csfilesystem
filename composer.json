@@ -10,7 +10,8 @@
     ],
     "require": {
         "illuminate/support": "^5.8",
-        "league/flysystem": "^1.1"
+        "league/flysystem": "^1.1",
+        "nesbot/carbon": "^2.41"
     },
     "autoload": {
         "psr-4": {
